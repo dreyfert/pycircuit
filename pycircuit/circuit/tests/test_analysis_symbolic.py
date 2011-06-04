@@ -10,7 +10,7 @@ import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_array_equal
 from copy import copy
 from test_circuit import create_current_divider
-from sympy import var, simplify, integrate, oo, limit, gruntz, pi
+from sympy import var, simplify, integrate, oo, limit, gruntz, pi, I
 
 def test_symbolic_ac():
     pycircuit.circuit.circuit.default_toolkit = symbolic
@@ -67,9 +67,9 @@ def test_symbolic_noise_iin_vout():
     c = SubCircuit()
     
     var('R1 R2', real=True)
-    var('k T I')
+    var('k T Iin')
 
-    c['is'] = IS(1, gnd, iac=I)
+    c['is'] = IS(1, gnd, iac=Iin)
     c['R1'] = R(1, 2, r=R1)
     c['R2'] = R(2, gnd, r=R2)
 
@@ -87,9 +87,9 @@ def test_symbolic_noise_iin_iout():
     c = SubCircuit()
     
     var('R1 R2 R3', real=True)
-    var('k T I s')
+    var('k T Iin s')
 
-    c['is'] = IS(1, gnd, iac=I)
+    c['is'] = IS(1, gnd, iac=Iin)
     c['R1'] = R(1, 2, r=R1)
     c['R2'] = R(2, gnd, r=R2)
     c['vl'] = VS(2, gnd)
@@ -108,7 +108,7 @@ def test_symbolic_noise_kt_over_C():
 
     var('r c w w1 k T V', real=True, positive=True)
 
-    s = 1j * w
+    s = I * w
 
     cir['vs'] = VS(1, gnd, vac=V)
     cir['R'] = R(1, 2, r=r)
